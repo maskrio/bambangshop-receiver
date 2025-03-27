@@ -99,3 +99,17 @@ Mutex is inefficient for notifications due to frequent reads and infrequent writ
 In rust, static variables are immutable by default. Rust's primary goal is memory safety without garbage collection. Static variables are accesible from any thread, and if direct mutation of statics is allowed, it would introduce data races, which are common cause of bugs of undefined behaviour. `lazy_static` gives global and mutable state, combined with thread-safe collections, it provides safe access to mutable global state.
 
 #### Reflection Subscriber-2
+
+> Have you explored things outside of the steps in the tutorial, for example: src/lib.rs? If not, explain why you did not do so. If yes, explain things that you have learned from those other parts of code.
+
+`lib.rs` is the foundation of this project and serves as the entry point for the compiler. `AppConfig` struct manages configuration for our application. This struct is then used in the `main.rs` to initialize the Rocket web framework.
+
+>Since you have completed the tutorial by now and have tried to test your notification system by spawning multiple instances of Receiver, explain how Observer pattern eases you to plug in more subscribers. How about spawning more than one instance of Main app, will it still be easy enough to add to the system?
+
+The observer pattern makes it remarkably easy to add more subscriber, it doesn't require modifying the publisher's logic and the notification process remains the same. We can spawn multiple receiver instances on different ports and each can independently subscribe to product types they're interested in. Observer Pattern itself scales well for adding subscriber.
+
+We can also spawn multiple Publisher's instances, but it would need to synchronize their subscibers lists, requiring a shared database for subscriber information. Without proper coordination, subscibers might receive the same notification multiple times(once from each publisher instance). Supporting multiple publisher would require additional architectural considerations beyond the basic pattern. 
+
+> Have you tried to make your own Tests, or enhance documentation on your Postman collection? If you have tried those features, tell us whether it is useful for your work (it can be your tutorial work or your Group Project).
+
+I have already done some REST API projects and using Postman is very useful to test different scenarios of API calls and tweaking the payloads ensuring the correctnes of it's responses. Using Postman collection is very useful for Group Projects since it provides well-documented requests by showing expected inputs, outputs, and error scenarios for each endpoint. Adding simple scenarios could also help understand how the function works in practice. Postman is a really great tool for API testing and make sure that it works as expected.  
