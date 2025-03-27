@@ -24,7 +24,14 @@ pub fn unsubscribe(product_type: &str) -> Result<Json<SubscriberRequest>> {
 pub fn receive(notification: Json<Notification>) -> Result<Json<Notification>> {
     return match NotificationService::receive_notification(notification.into_inner()) {
         Ok(f) => Ok(Json::from(f)),
-        Err(e) => Err(e)
+        Err(e) => Err(e),
     };
 }
 
+#[get("/")]
+pub fn list() -> Result<Json<Vec<String>>> {
+    return match NotificationService::list_messages() {
+        Ok(f) => Ok(Json::from(f)),
+        Err(e) => Err(e),
+    };
+}
